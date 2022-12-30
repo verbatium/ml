@@ -4,7 +4,6 @@
 package ai.app
 
 import ai.utilities.StringUtils
-
 import org.apache.commons.text.WordUtils
 
 fun main() {
