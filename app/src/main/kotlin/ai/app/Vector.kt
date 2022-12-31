@@ -24,6 +24,15 @@ data class Vector(val args: List<BigDecimal>) {
     override fun toString(): String {
         return args.joinToString(",", "[", "]")
     }
+
+    fun cosA(other: Vector): BigDecimal {
+        return cosA(other, MathContext.DECIMAL128)
+    }
+
+    fun cosA(other: Vector, mathContext: MathContext): BigDecimal {
+        val modAmodB = (this.modulus2() * other.modulus2()).sqrt(mathContext)
+        return (this * other).divide(modAmodB, mathContext)
+    }
 }
 
 
@@ -42,7 +51,8 @@ fun Vector.isCollinear(other: Vector, context: MathContext): Boolean {
 
 fun Vector.cos(context: MathContext): Vector = Vector(args.map { it.divide(modulus(), context) })
 fun Vector.cos(): Vector = this.cos(MathContext.DECIMAL128)
-fun Vector.modulus(): BigDecimal = args.map { it * it }.fold(ZERO, BigDecimal::add).sqrt(MathContext.DECIMAL128)
+fun Vector.modulus(): BigDecimal = modulus2().sqrt(MathContext.DECIMAL128)
+fun Vector.modulus2(): BigDecimal = args.map { it * it }.fold(ZERO, BigDecimal::add)
 operator fun Vector.plus(b: Vector) = Vector(args.zip(b.args).map { it.first + it.second })
 operator fun Vector.minus(b: Vector) = Vector(args.zip(b.args).map { it.first - it.second })
 operator fun Vector.times(k: BigDecimal) = Vector(args.map { it * k })
