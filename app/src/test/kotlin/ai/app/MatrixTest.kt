@@ -183,4 +183,22 @@ class MatrixTest {
         )
         assertEquals(expected, result)
     }
+
+    @Test
+    fun minus() {
+        val a = matrixOf(
+            vectorOf(4, 2),
+            vectorOf(9, 0)
+        )
+        val b = matrixOf(
+            vectorOf(3, 1),
+            vectorOf(-3, 4)
+        )
+        val result = a - b
+        val expected = matrixOf(
+            vectorOf(1, 1),
+            vectorOf(12, -4)
+        )
+        assertEquals(expected, result)
+    }
 }
