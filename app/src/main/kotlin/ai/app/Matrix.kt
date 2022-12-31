@@ -57,5 +57,8 @@ fun Matrix.minor(exclusions: Pair<List<Int>, List<Int>>): Matrix {
 operator fun Matrix.times(d: BigDecimal): Matrix = Matrix(vectors.map { it * d })
 operator fun Matrix.plus(d: Matrix): Matrix = Matrix(vectors.zip(d.vectors).map { it.first + it.second })
 operator fun Matrix.minus(d: Matrix): Matrix = Matrix(vectors.zip(d.vectors).map { it.first - it.second })
-
+operator fun Matrix.times(d: Matrix): Matrix {
+    val otherCols = d.columns()
+    return Matrix(vectors.map { Vector(otherCols.map { o -> it * o }) })
+}
 fun cellSign(index: Int): BigDecimal = (index % 2).compareTo(0.5).toBigDecimal().negate()
