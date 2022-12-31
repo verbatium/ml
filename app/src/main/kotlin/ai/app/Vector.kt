@@ -10,10 +10,10 @@ data class Vector(val args: List<BigDecimal>) {
         fun vectorOf(vararg args: BigDecimal): Vector = Vector(args.asList())
         fun vectorOf(vararg args: Int): Vector = Vector(args.asList().map(Int::toBigDecimal).toList())
 
-        fun isCoplanar(vararg vectors : Vector) : Boolean {
+        fun isCoplanar(vararg vectors: Vector): Boolean {
             val matrix = matrixOf(*vectors)
             if (matrix.size() == 2 to 2) return true
-            if(matrix.size() == 3 to 3) {
+            if (matrix.size() == 3 to 3) {
                 return matrix.determinant().isZero()
             }
             return false
