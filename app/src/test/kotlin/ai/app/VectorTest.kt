@@ -81,6 +81,9 @@ class VectorTest {
     fun isCoplanar_3x3CoplanarIfDeterminantIsZero() {
         assertTrue(Vector.isCoplanar(vectorOf(1, 1, 1), vectorOf(1, 3, 1), vectorOf(2, 2, 2)))
         assertFalse(Vector.isCoplanar(vectorOf(1, 2, 3), vectorOf(1, 1, 1), vectorOf(1, 2, 1)))
+
+        assertEquals(d(0), vectorOf(1,1,1) * vectorOf(1,3,1).vectorMultiply(vectorOf(2,2,2)))
+        assertEquals(d(2), vectorOf(1,2,3) * vectorOf(1,1,1).vectorMultiply(vectorOf(1,2,1)))
     }
 
     @Test
