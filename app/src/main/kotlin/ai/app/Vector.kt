@@ -8,6 +8,11 @@ data class Vector(val args: List<BigDecimal>) {
         fun vectorOf(vararg args: BigDecimal): Vector = Vector(args.asList())
         fun vectorOf(vararg args: Int): Vector = Vector(args.asList().map(Int::toBigDecimal).toList())
     }
+
+    override fun toString(): String {
+        return args.joinToString(",", "[", "]")
+    }
+
 }
 
 fun Vector.isOrthogonal(other: Vector): Boolean = (this * other).compareTo(BigDecimal.ZERO) == 0
