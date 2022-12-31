@@ -31,7 +31,7 @@ fun Matrix.determinant(): BigDecimal {
     if (vectors.size == 1) return vectors.first().args.first()
     return vectors[0].args.foldIndexed(ZERO) { index, total, item ->
         Matrix(vectors.slice(1 until vectors.size).map { Vector(it.args.filterIndexed { i, _ -> i != index }) })
-            .determinant() * item * (index % 2).compareTo(0.5).toBigDecimal().negate() + total
+            .determinant() * item * cellSign(index) + total
     }
 }
 
@@ -55,3 +55,5 @@ fun Matrix.minor(exclusions: Pair<List<Int>, List<Int>>): Matrix {
     return Matrix(vectors.filterIndexed { index, _ -> !exclusions.first.contains(index) }
         .map { Vector(it.args.filterIndexed { index, _ -> !exclusions.second.contains(index) }) })
 }
+
+fun cellSign(index: Int): BigDecimal = (index % 2).compareTo(0.5).toBigDecimal().negate()
