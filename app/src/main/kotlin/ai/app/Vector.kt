@@ -15,6 +15,14 @@ data class Vector(val args: List<BigDecimal>) {
     override fun toString(): String = args.joinToString(",", "[", "]")
 }
 
+fun Vector.vectorMultiply(other: Vector): Vector {
+    return Vector(matrixOf(this, other)
+        .minors(2 to 2)
+        .map { it.determinant() }
+        .mapIndexed {index, d -> d * cellSign(index) }
+    )
+}
+
 fun Vector.projectionOn(other: Vector): BigDecimal = projectionOn(other, MathContext.DECIMAL128)
 fun Vector.projectionOn(other: Vector, context: MathContext): BigDecimal = (this * other).divide(other.modulus(), context)
 

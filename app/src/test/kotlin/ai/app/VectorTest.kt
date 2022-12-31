@@ -104,7 +104,13 @@ class VectorTest {
 
     @Test
     fun projection() {
-        assertEquals(d(2.2), vectorOf(1,2).projectionOn(vectorOf(3,4)))
+        assertEquals(d(2.2), vectorOf(1, 2).projectionOn(vectorOf(3, 4)))
+    }
+
+    @Test
+    fun vectorMultiply() {
+        assertEquals(vectorOf(-7, 8, -3), vectorOf(1, 2, 3).vectorMultiply(vectorOf(2, 1, -2)))
+        assertEquals(vectorOf(0, -5, -5), vectorOf(-1, 2, -2).vectorMultiply(vectorOf(2, 1, -1)))
     }
 }
 
