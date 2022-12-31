@@ -70,6 +70,18 @@ class VectorTest {
         assertTrue(vectorOf(d(0), d(3)).isCollinear(vectorOf(d(0), d(6))))
         assertFalse(vectorOf(0, 1, 2).isCollinear(vectorOf(1, 0, 1)))
     }
+
+    @Test
+    fun isCoplanar_2x2AlwaysCoplanar() {
+        assertTrue(Vector.isCoplanar(vectorOf(1,2), vectorOf(2,3)))
+
+    }
+
+    @Test
+    fun isCoplanar_3x3CoplanarIfDeterminantIsZero() {
+        assertTrue(Vector.isCoplanar(vectorOf(1, 1, 1), vectorOf(1, 3, 1), vectorOf(2, 2, 2)))
+        assertFalse(Vector.isCoplanar(vectorOf(1, 2, 3), vectorOf(1, 1, 1), vectorOf(1, 2, 1)))
+    }
 }
 
 fun d(value: Int): BigDecimal {

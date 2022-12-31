@@ -11,6 +11,10 @@ class Matrix(val vectors: List<Vector>) {
     override fun toString(): String {
         return vectors.joinToString(",", "[", "]")
     }
+
+    fun size(): Pair<Int, Int> {
+        return vectors.size to vectors.map { it.args.size }.toSortedSet().first()
+    }
 }
 
 fun Matrix.determinant(): BigDecimal {
