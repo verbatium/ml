@@ -25,12 +25,9 @@ fun Vector.vectorMultiply(other: Vector): Vector {
 
 fun Vector.projectionOn(other: Vector): BigDecimal = projectionOn(other, MathContext.DECIMAL128)
 fun Vector.projectionOn(other: Vector, context: MathContext): BigDecimal = (this * other).divide(other.modulus(), context)
-
 fun Vector.isOrthogonal(other: Vector): Boolean = (this * other).isZero()
 fun Vector.cosA(other: Vector): BigDecimal = cosA(other, MathContext.DECIMAL128)
-fun Vector.cosA(other: Vector, context: MathContext): BigDecimal =
-    (this * other).divide((modulus2() * other.modulus2()).sqrt(context), context)
-
+fun Vector.cosA(other: Vector, context: MathContext): BigDecimal = (this * other).divide((modulus2() * other.modulus2()).sqrt(context), context)
 fun Vector.isCollinear(other: Vector): Boolean = this.isCollinear(other, MathContext.DECIMAL128)
 fun Vector.isCollinear(other: Vector, context: MathContext): Boolean {
     return args.zip(other.args)
@@ -40,8 +37,6 @@ fun Vector.isCollinear(other: Vector, context: MathContext): Boolean {
         ?.let { other == this * it }
         ?: false
 }
-
-
 fun Vector.cos(context: MathContext): Vector = Vector(args.map { it.divide(modulus(), context) })
 fun Vector.cos(): Vector = this.cos(MathContext.DECIMAL128)
 fun Vector.modulus(): BigDecimal = modulus2().sqrt(MathContext.DECIMAL128)
@@ -49,8 +44,6 @@ fun Vector.modulus2(): BigDecimal = args.map { it * it }.fold(ZERO, BigDecimal::
 operator fun Vector.plus(b: Vector) = Vector(args.zip(b.args).map { it.first + it.second })
 operator fun Vector.minus(b: Vector) = Vector(args.zip(b.args).map { it.first - it.second })
 operator fun Vector.times(k: BigDecimal) = Vector(args.map { it * k })
-operator fun Vector.times(other: Vector): BigDecimal = args.zip(other.args)
-    .map { it.first * it.second }
-    .fold(ZERO, BigDecimal::add)
+operator fun Vector.times(other: Vector): BigDecimal = args.zip(other.args).map { it.first * it.second }.fold(ZERO, BigDecimal::add)
 
 fun BigDecimal.isZero(): Boolean = this.compareTo(ZERO) == 0

@@ -17,10 +17,8 @@ data class Matrix(val vectors: List<Vector>) {
 
 fun Matrix.columns() = IntRange(0, rows() - 1).map { index -> Vector(vectors.map { v -> v.args[index] }) }
 fun Matrix.transpose(): Matrix = Matrix(columns())
-
 fun Matrix.rows(): Int = vectors.size
 fun Matrix.cols(): Int = vectors.first().args.size
-
 fun Matrix.size(): Pair<Int, Int> = rows() to cols()
 fun Matrix.isSquare(): Boolean = rows() == cols()
 fun Matrix.determinant(): BigDecimal {
@@ -53,12 +51,9 @@ fun Matrix.minor(exclusions: Pair<List<Int>, List<Int>>): Matrix {
         .map { Vector(it.args.filterIndexed { index, _ -> !exclusions.second.contains(index) }) })
 }
 
+operator fun Matrix.times(other: BigDecimal): Matrix = Matrix(vectors.map { it * other })
+operator fun Matrix.plus(other: Matrix): Matrix = Matrix(vectors.zip(other.vectors).map { it.first + it.second })
+operator fun Matrix.minus(other: Matrix): Matrix = Matrix(vectors.zip(other.vectors).map { it.first - it.second })
+operator fun Matrix.times(other: Matrix): Matrix = Matrix(other.transpose().vectors.map { Vector(vectors.map { o -> it * o }) }).transpose()
 
-operator fun Matrix.times(d: BigDecimal): Matrix = Matrix(vectors.map { it * d })
-operator fun Matrix.plus(d: Matrix): Matrix = Matrix(vectors.zip(d.vectors).map { it.first + it.second })
-operator fun Matrix.minus(d: Matrix): Matrix = Matrix(vectors.zip(d.vectors).map { it.first - it.second })
-operator fun Matrix.times(d: Matrix): Matrix {
-    val otherCols = d.columns()
-    return Matrix(vectors.map { Vector(otherCols.map { o -> it * o }) })
-}
 fun cellSign(index: Int): BigDecimal = (index % 2).compareTo(0.5).toBigDecimal().negate()
