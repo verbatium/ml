@@ -12,16 +12,11 @@ data class Matrix(val vectors: List<Vector>) {
         }
     }
 
-    override fun toString(): String {
-        return vectors.joinToString(",", "[", "]")
-    }
+    override fun toString(): String = vectors.joinToString(",", "[", "]")
 }
 
 fun Matrix.columns() = IntRange(0, rows() - 1).map { index -> Vector(vectors.map { v -> v.args[index] }) }
-
-fun Matrix.transpose(): Matrix {
-    return Matrix(columns())
-}
+fun Matrix.transpose(): Matrix = Matrix(columns())
 
 fun Matrix.rows(): Int = vectors.size
 fun Matrix.cols(): Int = vectors.first().args.size
@@ -59,8 +54,7 @@ fun Matrix.minor(exclusions: Pair<List<Int>, List<Int>>): Matrix {
 }
 
 
-operator fun Matrix.times(d: BigDecimal): Matrix {
-    return Matrix(vectors.map { it * d })
-}
+operator fun Matrix.times(d: BigDecimal): Matrix = Matrix(vectors.map { it * d })
+operator fun Matrix.plus(d: Matrix): Matrix = Matrix(vectors.zip(d.vectors).map { it.first + it.second })
 
 fun cellSign(index: Int): BigDecimal = (index % 2).compareTo(0.5).toBigDecimal().negate()

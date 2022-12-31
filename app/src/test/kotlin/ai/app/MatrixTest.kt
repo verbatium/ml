@@ -165,4 +165,22 @@ class MatrixTest {
         )
         assertEquals(expected, result)
     }
+
+    @Test
+    fun add() {
+        val a = matrixOf(
+            vectorOf(4, 2),
+            vectorOf(9, 0)
+        )
+        val b = matrixOf(
+            vectorOf(3, 1),
+            vectorOf(-3, 4)
+        )
+        val result = a + b
+        val expected = matrixOf(
+            vectorOf(7, 3),
+            vectorOf(6, 4)
+        )
+        assertEquals(expected, result)
+    }
 }
