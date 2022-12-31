@@ -17,15 +17,17 @@ data class Matrix(val vectors: List<Vector>) {
     }
 }
 
+fun Matrix.columns() = IntRange(0, rows() - 1).map { index -> Vector(vectors.map { v -> v.args[index] }) }
+
+fun Matrix.transpose(): Matrix {
+    return Matrix(columns())
+}
+
 fun Matrix.rows(): Int = vectors.size
 fun Matrix.cols(): Int = vectors.first().args.size
 
-fun Matrix.size(): Pair<Int, Int> {
-    return rows() to cols()
-}
-
+fun Matrix.size(): Pair<Int, Int> = rows() to cols()
 fun Matrix.isSquare(): Boolean = rows() == cols()
-
 fun Matrix.determinant(): BigDecimal {
     if (!this.isSquare()) throw IllegalArgumentException("Determinant can be calculated only for square matrix")
     if (vectors.size == 1) return vectors.first().args.first()

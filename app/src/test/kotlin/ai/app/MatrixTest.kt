@@ -137,4 +137,18 @@ class MatrixTest {
             ), matrix.minors(2 to 2)
         )
     }
+
+    @Test
+    fun transpose() {
+        val matrix = matrixOf(
+            vectorOf(1, 2),
+            vectorOf(3, 4)
+        )
+        val result = matrix.transpose()
+        val expected = matrixOf(
+            vectorOf(1, 3),
+            vectorOf(2, 4)
+        )
+        assertEquals(expected, result)
+    }
 }
