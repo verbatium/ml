@@ -9,35 +9,15 @@ data class Vector(val args: List<BigDecimal>) {
     companion object {
         fun vectorOf(vararg args: BigDecimal): Vector = Vector(args.asList())
         fun vectorOf(vararg args: Int): Vector = Vector(args.asList().map(Int::toBigDecimal).toList())
-
-        fun isCoplanar(vararg vectors: Vector): Boolean {
-            val matrix = matrixOf(*vectors)
-            if (matrix.size() == 2 to 2) return true
-            if (matrix.size() == 3 to 3) {
-                return matrix.determinant().isZero()
-            } else {
-                return matrix.rank() < 3
-            }
-        }
+        fun isCoplanar(vararg vectors: Vector): Boolean = matrixOf(*vectors).rank() < 3
     }
-
-    override fun toString(): String {
-        return args.joinToString(",", "[", "]")
-    }
-
-    fun cosA(other: Vector): BigDecimal {
-        return cosA(other, MathContext.DECIMAL128)
-    }
-
-    fun cosA(other: Vector, mathContext: MathContext): BigDecimal {
-        val modAmodB = (this.modulus2() * other.modulus2()).sqrt(mathContext)
-        return (this * other).divide(modAmodB, mathContext)
-    }
+    override fun toString(): String = args.joinToString(",", "[", "]")
 }
 
 
 fun Vector.isOrthogonal(other: Vector): Boolean = (this * other).isZero()
-
+fun Vector.cosA(other: Vector): BigDecimal = cosA(other, MathContext.DECIMAL128)
+fun Vector.cosA(other: Vector, context: MathContext): BigDecimal = (this * other).divide((modulus2() * other.modulus2()).sqrt(context), context)
 fun Vector.isCollinear(other: Vector): Boolean = this.isCollinear(other, MathContext.DECIMAL128)
 fun Vector.isCollinear(other: Vector, context: MathContext): Boolean {
     return args.zip(other.args)
