@@ -101,6 +101,11 @@ class VectorTest {
         assertEquals(d(0.96), vectorOf(3, 4).cosA(vectorOf(4, 3)))
         assertEquals(d(0.8), vectorOf(7, 1).cosA(vectorOf(5, 5)))
     }
+
+    @Test
+    fun projection() {
+        assertEquals(d(2.2), vectorOf(1,2).projectionOn(vectorOf(3,4)))
+    }
 }
 
 fun d(value: Int): BigDecimal {

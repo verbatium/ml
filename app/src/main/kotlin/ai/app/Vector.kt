@@ -11,13 +11,18 @@ data class Vector(val args: List<BigDecimal>) {
         fun vectorOf(vararg args: Int): Vector = Vector(args.asList().map(Int::toBigDecimal).toList())
         fun isCoplanar(vararg vectors: Vector): Boolean = matrixOf(*vectors).rank() < 3
     }
+
     override fun toString(): String = args.joinToString(",", "[", "]")
 }
 
+fun Vector.projectionOn(other: Vector): BigDecimal = projectionOn(other, MathContext.DECIMAL128)
+fun Vector.projectionOn(other: Vector, context: MathContext): BigDecimal = (this * other).divide(other.modulus(), context)
 
 fun Vector.isOrthogonal(other: Vector): Boolean = (this * other).isZero()
 fun Vector.cosA(other: Vector): BigDecimal = cosA(other, MathContext.DECIMAL128)
-fun Vector.cosA(other: Vector, context: MathContext): BigDecimal = (this * other).divide((modulus2() * other.modulus2()).sqrt(context), context)
+fun Vector.cosA(other: Vector, context: MathContext): BigDecimal =
+    (this * other).divide((modulus2() * other.modulus2()).sqrt(context), context)
+
 fun Vector.isCollinear(other: Vector): Boolean = this.isCollinear(other, MathContext.DECIMAL128)
 fun Vector.isCollinear(other: Vector, context: MathContext): Boolean {
     return args.zip(other.args)
