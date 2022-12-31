@@ -151,4 +151,18 @@ class MatrixTest {
         )
         assertEquals(expected, result)
     }
+
+    @Test
+    fun multiplyByScalar() {
+        val matrix = matrixOf(
+            vectorOf(1, 2),
+            vectorOf(3, 4)
+        )
+        val result = matrix * d(2)
+        val expected = matrixOf(
+            vectorOf(2, 4),
+            vectorOf(6, 8)
+        )
+        assertEquals(expected, result)
+    }
 }

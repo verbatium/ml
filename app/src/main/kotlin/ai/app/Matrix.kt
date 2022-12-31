@@ -58,4 +58,9 @@ fun Matrix.minor(exclusions: Pair<List<Int>, List<Int>>): Matrix {
         .map { Vector(it.args.filterIndexed { index, _ -> !exclusions.second.contains(index) }) })
 }
 
+
+operator fun Matrix.times(d: BigDecimal): Matrix {
+    return Matrix(vectors.map { it * d })
+}
+
 fun cellSign(index: Int): BigDecimal = (index % 2).compareTo(0.5).toBigDecimal().negate()
