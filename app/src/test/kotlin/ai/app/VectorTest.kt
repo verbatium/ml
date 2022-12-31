@@ -73,7 +73,7 @@ class VectorTest {
 
     @Test
     fun isCoplanar_2x2AlwaysCoplanar() {
-        assertTrue(Vector.isCoplanar(vectorOf(1,2), vectorOf(2,3)))
+        assertTrue(Vector.isCoplanar(vectorOf(1, 2), vectorOf(2, 3)))
 
     }
 
@@ -81,6 +81,19 @@ class VectorTest {
     fun isCoplanar_3x3CoplanarIfDeterminantIsZero() {
         assertTrue(Vector.isCoplanar(vectorOf(1, 1, 1), vectorOf(1, 3, 1), vectorOf(2, 2, 2)))
         assertFalse(Vector.isCoplanar(vectorOf(1, 2, 3), vectorOf(1, 1, 1), vectorOf(1, 2, 1)))
+    }
+
+    @Test
+    fun isCoplanar_3x4CoplanarIfRankIsLessThan3() {
+        //Вектора компланарны если среди них не более двух линейно независимых векторов.
+        assertTrue(
+            Vector.isCoplanar(
+                vectorOf(1, 1, 1),
+                vectorOf(1, 2, 0),
+                vectorOf(0, -1, 1),
+                vectorOf(3, 3, 3),
+            )
+        )
     }
 }
 

@@ -15,8 +15,9 @@ data class Vector(val args: List<BigDecimal>) {
             if (matrix.size() == 2 to 2) return true
             if (matrix.size() == 3 to 3) {
                 return matrix.determinant().isZero()
+            } else {
+                return matrix.rank() < 3
             }
-            return false
         }
     }
 
