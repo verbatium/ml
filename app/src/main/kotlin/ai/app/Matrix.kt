@@ -18,6 +18,7 @@ data class Matrix(val vectors: List<Vector>) {
         fun identity(size: Int): Matrix = diagonal(Vector.scalar(1, size))
         fun scalar(value: Int, size: Int): Matrix = diagonal(Vector.scalar(value, size))
         fun scalar(value: BigDecimal, size: Int): Matrix = diagonal(Vector.scalar(value, size))
+        fun vectorRow(row: Vector): Matrix = matrixOf(row)
     }
 
     override fun toString(): String = vectors.joinToString(",", "[", "]")

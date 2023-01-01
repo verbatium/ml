@@ -296,4 +296,10 @@ class MatrixTest {
         assertEquals(matrixOf(vectorOf(3, 0), vectorOf(0, 3)), Matrix.scalar(3, 2))
         assertEquals(matrixOf(vectorOf(2, 0), vectorOf(0, 2)), Matrix.scalar(d(2), 2))
     }
+
+    @Test
+    fun vectorRow() {
+        assertEquals(matrixOf(vectorOf(1, 2,3)), Matrix.vectorRow(vectorOf(1, 2,3)))
+    }
+    
 }
