@@ -19,12 +19,13 @@ data class Matrix(val vectors: List<Vector>) {
         fun scalar(value: Int, size: Int): Matrix = diagonal(Vector.scalar(value, size))
         fun scalar(value: BigDecimal, size: Int): Matrix = diagonal(Vector.scalar(value, size))
         fun vectorRow(row: Vector): Matrix = matrixOf(row)
+        fun vectorColumn(vector: Vector): Matrix = vectorRow(vector).transpose()
     }
 
     override fun toString(): String = vectors.joinToString(",", "[", "]")
 }
 
-fun Matrix.columns() = (0 until  rows()).map { index -> Vector(vectors.map { v -> v.args[index] }) }
+fun Matrix.columns() = (0 until  cols()).map { index -> Vector(vectors.map { v -> v.args[index] }) }
 fun Matrix.transpose(): Matrix = Matrix(columns())
 fun Matrix.rows(): Int = vectors.size
 fun Matrix.cols(): Int = vectors.first().args.size

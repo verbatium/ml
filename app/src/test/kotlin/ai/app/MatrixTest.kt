@@ -142,7 +142,7 @@ class MatrixTest {
     }
 
     @Test
-    fun transpose() {
+    fun transpose_square() {
         val matrix = matrixOf(
             vectorOf(1, 2),
             vectorOf(3, 4)
@@ -153,6 +153,17 @@ class MatrixTest {
             vectorOf(2, 4)
         )
         assertEquals(expected, result)
+    }
+
+    @Test
+    fun transpose_horizontal() {
+        assertEquals(matrixOf(vectorOf(1),vectorOf( 2),vectorOf(3)), matrixOf(vectorOf(1, 2,3)).transpose())
+    }
+
+    @Test
+    fun columns() {
+        assertEquals(listOf(vectorOf(1,3),vectorOf(2,4 )), matrixOf(vectorOf(1, 2), vectorOf(3,4)).columns())
+        assertEquals(listOf(vectorOf(1),vectorOf( 2),vectorOf(3)), matrixOf(vectorOf(1, 2,3)).columns())
     }
 
     @Test
@@ -301,5 +312,9 @@ class MatrixTest {
     fun vectorRow() {
         assertEquals(matrixOf(vectorOf(1, 2,3)), Matrix.vectorRow(vectorOf(1, 2,3)))
     }
-    
+
+    @Test
+    fun vectorColumn() {
+        assertEquals(matrixOf(vectorOf(1),vectorOf( 2),vectorOf(3)), Matrix.vectorColumn(vectorOf(1, 2,3)))
+    }
 }
