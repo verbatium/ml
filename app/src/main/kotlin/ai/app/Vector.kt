@@ -17,7 +17,7 @@ data class Vector(val args: List<BigDecimal>) {
 
 fun Vector.vectorMultiply(other: Vector): Vector {
     return Vector(matrixOf(this, other)
-        .minors(2 to 2)
+        .cofactors(2 to 2)
         .map { it.determinant() }
         .mapIndexed {index, d -> d * cellSign(index) }
     )

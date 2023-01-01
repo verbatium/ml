@@ -80,19 +80,19 @@ class MatrixTest {
     }
 
     @Test
-    fun minorMatrix() {
+    fun cofactor_excludeLastColumn() {
         val matrix = matrixOf(
-            vectorOf(1, 2),
-            vectorOf(3, 4)
+            vectorOf(1, 2, 3),
+            vectorOf(3, 4, 3)
         )
-        assertEquals(matrixOf(vectorOf(1)), matrix.minorMatrix(listOf(1) to listOf(1)))
-        assertEquals(matrixOf(vectorOf(2)), matrix.minorMatrix(listOf(1) to listOf(0)))
-        assertEquals(matrixOf(vectorOf(3)), matrix.minorMatrix(listOf(0) to listOf(1)))
-        assertEquals(matrixOf(vectorOf(4)), matrix.minorMatrix(listOf(0) to listOf(0)))
+        assertEquals(matrixOf(vectorOf(1)), matrix.cofactor(listOf(1) to listOf(1,2)))
+        assertEquals(matrixOf(vectorOf(2)), matrix.cofactor(listOf(1) to listOf(0,2)))
+        assertEquals(matrixOf(vectorOf(3)), matrix.cofactor(listOf(0) to listOf(1,2)))
+        assertEquals(matrixOf(vectorOf(4)), matrix.cofactor(listOf(0) to listOf(0,2)))
     }
 
     @Test
-    fun minors() {
+    fun listOfCofactors() {
         val matrix = matrixOf(
             vectorOf(1, 2, 3),
             vectorOf(4, 5, 6),
@@ -136,7 +136,7 @@ class MatrixTest {
                     vectorOf(1, 2),
                     vectorOf(4, 5)
                 ),
-            ), matrix.minors(2 to 2)
+            ), matrix.cofactors(2 to 2)
         )
     }
 
@@ -229,7 +229,7 @@ class MatrixTest {
             vectorOf(2, 3, 5),
             vectorOf(6, 7, 8),
         )
-        assertEquals(matrixOf(vectorOf(1, 2), vectorOf(2, 3)).determinant(), matrix.minor(2, 2))
+        assertEquals(d(-1), matrix.minor(2, 2))
     }
 
     @Test
@@ -263,5 +263,15 @@ class MatrixTest {
         )
         val result = matrix.inverse(mathContext)
         assertEquals(expected, result)
+    }
+
+    @Test
+    fun cofactor() {
+        val matrix = matrixOf(
+            vectorOf(1, 2, 4),
+            vectorOf(2, 3, 5),
+            vectorOf(6, 7, 8),
+        )
+        assertEquals(matrixOf(vectorOf(1, 2), vectorOf(2, 3)), matrix.cofactor(2, 2))
     }
 }
