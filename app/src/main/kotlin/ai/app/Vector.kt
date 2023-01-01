@@ -41,6 +41,7 @@ fun Vector.cos(context: MathContext): Vector = Vector(args.map { it.divide(modul
 fun Vector.cos(): Vector = this.cos(MathContext.DECIMAL128)
 fun Vector.modulus(): BigDecimal = modulus2().sqrt(MathContext.DECIMAL128)
 fun Vector.modulus2(): BigDecimal = args.map { it * it }.fold(ZERO, BigDecimal::add)
+fun Vector.divide(k: BigDecimal, mathContext: MathContext) = Vector(args.map { it.divide(k, mathContext)})
 operator fun Vector.plus(b: Vector) = Vector(args.zip(b.args).map { it.first + it.second })
 operator fun Vector.minus(b: Vector) = Vector(args.zip(b.args).map { it.first - it.second })
 operator fun Vector.times(k: BigDecimal) = Vector(args.map { it * k })

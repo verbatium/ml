@@ -5,6 +5,8 @@ import ai.app.Vector.Companion.vectorOf
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.math.MathContext
+import java.math.RoundingMode
 
 class MatrixTest {
     @Test
@@ -243,6 +245,23 @@ class MatrixTest {
             vectorOf(2, -2, 4),
         )
         val result = matrix.adjugate()
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun invertibleMatrix() {
+        val mathContext = MathContext(2, RoundingMode.HALF_UP)
+        val matrix = matrixOf(
+            vectorOf(2, 4, 1),
+            vectorOf(0, 2, 1),
+            vectorOf(2, 1, 1),
+        )
+        val expected = matrixOf(
+            vectorOf(d(1).divide(d(6), mathContext), d(-0.5), d(1.0).divide(d(3), mathContext)),
+            vectorOf(d(1.0).divide(d(3), mathContext), d(0), d(-1.0).divide(d(3), mathContext)),
+            vectorOf(d(-2.0).divide(d(3), mathContext), d(1), d(2.0).divide(d(3), mathContext)),
+        )
+        val result = matrix.inverse(mathContext)
         assertEquals(expected, result)
     }
 }
