@@ -10,6 +10,8 @@ data class Vector(val args: List<BigDecimal>) {
         fun vectorOf(vararg args: BigDecimal): Vector = Vector(args.asList())
         fun vectorOf(vararg args: Int): Vector = Vector(args.asList().map(Int::toBigDecimal).toList())
         fun isCoplanar(vararg vectors: Vector): Boolean = matrixOf(*vectors).rank() < 3
+        fun scalar(value: Int, size: Int): Vector = scalar(value.toBigDecimal(), size)
+        fun scalar(value: BigDecimal, size: Int): Vector = Vector((0 until size).map { value })
     }
 
     override fun toString(): String = args.joinToString(",", "[", "]")
