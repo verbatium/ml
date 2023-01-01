@@ -43,12 +43,16 @@ fun Matrix.minors(size: Pair<Int, Int>): List<Matrix> {
         .flatMap { row ->
             IntRange(0, cols() - 1).toList().permutations(cols() - size.second).map { col -> row to col }
         }
-        .map(::minor)
+        .map(::minorMatrix)
 }
 
-fun Matrix.minor(exclusions: Pair<List<Int>, List<Int>>): Matrix {
+fun Matrix.minorMatrix(exclusions: Pair<List<Int>, List<Int>>): Matrix {
     return Matrix(vectors.filterIndexed { index, _ -> !exclusions.first.contains(index) }
         .map { Vector(it.args.filterIndexed { index, _ -> !exclusions.second.contains(index) }) })
+}
+
+fun Matrix.minor(i: Int, j: Int): BigDecimal {
+    return minorMatrix(listOf( i) to listOf (j)).determinant()
 }
 
 operator fun Matrix.times(other: BigDecimal): Matrix = Matrix(vectors.map { it * other })

@@ -78,15 +78,15 @@ class MatrixTest {
     }
 
     @Test
-    fun minor() {
+    fun minorMatrix() {
         val matrix = matrixOf(
             vectorOf(1, 2),
             vectorOf(3, 4)
         )
-        assertEquals(matrixOf(vectorOf(1)), matrix.minor(listOf(1) to listOf(1)))
-        assertEquals(matrixOf(vectorOf(2)), matrix.minor(listOf(1) to listOf(0)))
-        assertEquals(matrixOf(vectorOf(3)), matrix.minor(listOf(0) to listOf(1)))
-        assertEquals(matrixOf(vectorOf(4)), matrix.minor(listOf(0) to listOf(0)))
+        assertEquals(matrixOf(vectorOf(1)), matrix.minorMatrix(listOf(1) to listOf(1)))
+        assertEquals(matrixOf(vectorOf(2)), matrix.minorMatrix(listOf(1) to listOf(0)))
+        assertEquals(matrixOf(vectorOf(3)), matrix.minorMatrix(listOf(0) to listOf(1)))
+        assertEquals(matrixOf(vectorOf(4)), matrix.minorMatrix(listOf(0) to listOf(0)))
     }
 
     @Test
@@ -218,5 +218,15 @@ class MatrixTest {
             vectorOf(27, 9)
         )
         assertEquals(expected, result)
+    }
+
+    @Test
+    fun minor() {
+        val matrix = matrixOf(
+            vectorOf(1, 2, 4),
+            vectorOf(2, 3, 5),
+            vectorOf(6, 7, 8),
+        )
+        assertEquals(matrixOf(vectorOf(1, 2), vectorOf(2, 3)).determinant(), matrix.minor(2, 2))
     }
 }
