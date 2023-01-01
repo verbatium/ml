@@ -280,4 +280,10 @@ class MatrixTest {
     fun diagonalMatrix_check() {
         assertTrue(matrixOf(vectorOf(1, 0), vectorOf(0, 1)).isDiagonal())
     }
+
+    @Test
+    fun diagonalMatrix() {
+        assertEquals(matrixOf(vectorOf(1, 0), vectorOf(0, 2)), Matrix.diagonal(vectorOf(1, 2)))
+    }
+
 }
