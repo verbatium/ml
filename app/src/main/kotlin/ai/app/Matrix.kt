@@ -16,6 +16,8 @@ data class Matrix(val vectors: List<Vector>) {
             Matrix(vectorOf.args.mapIndexed { i, it -> Vector((0 until  vectorOf.args.size).map { j -> if (i == j) it else ZERO }) })
 
         fun identity(size: Int): Matrix = diagonal(Vector.scalar(1, size))
+        fun scalar(value: Int, size: Int): Matrix = diagonal(Vector.scalar(value, size))
+        fun scalar(value: BigDecimal, size: Int): Matrix = diagonal(Vector.scalar(value, size))
     }
 
     override fun toString(): String = vectors.joinToString(",", "[", "]")
