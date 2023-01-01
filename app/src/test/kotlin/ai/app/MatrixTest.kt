@@ -3,6 +3,7 @@ package ai.app
 import ai.app.Matrix.Companion.matrixOf
 import ai.app.Vector.Companion.vectorOf
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.math.MathContext
@@ -85,10 +86,10 @@ class MatrixTest {
             vectorOf(1, 2, 3),
             vectorOf(3, 4, 3)
         )
-        assertEquals(matrixOf(vectorOf(1)), matrix.cofactor(listOf(1) to listOf(1,2)))
-        assertEquals(matrixOf(vectorOf(2)), matrix.cofactor(listOf(1) to listOf(0,2)))
-        assertEquals(matrixOf(vectorOf(3)), matrix.cofactor(listOf(0) to listOf(1,2)))
-        assertEquals(matrixOf(vectorOf(4)), matrix.cofactor(listOf(0) to listOf(0,2)))
+        assertEquals(matrixOf(vectorOf(1)), matrix.cofactor(listOf(1) to listOf(1, 2)))
+        assertEquals(matrixOf(vectorOf(2)), matrix.cofactor(listOf(1) to listOf(0, 2)))
+        assertEquals(matrixOf(vectorOf(3)), matrix.cofactor(listOf(0) to listOf(1, 2)))
+        assertEquals(matrixOf(vectorOf(4)), matrix.cofactor(listOf(0) to listOf(0, 2)))
     }
 
     @Test
@@ -273,5 +274,10 @@ class MatrixTest {
             vectorOf(6, 7, 8),
         )
         assertEquals(matrixOf(vectorOf(1, 2), vectorOf(2, 3)), matrix.cofactor(2, 2))
+    }
+
+    @Test
+    fun diagonalMatrix_check() {
+        assertTrue(matrixOf(vectorOf(1, 0), vectorOf(0, 1)).isDiagonal())
     }
 }

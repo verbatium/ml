@@ -30,7 +30,6 @@ fun Matrix.determinant(): BigDecimal {
             .determinant() * item * cellSign(index) + total
     }
 }
-
 fun Matrix.rank(): Int {
     val maxRank = vectors.size.coerceAtMost(vectors.first().args.size)
     return IntRange(0, maxRank - 1).toList().stream()
@@ -38,7 +37,6 @@ fun Matrix.rank(): Int {
         .findFirst()
         .orElse(maxRank)
 }
-
 fun Matrix.cofactors(size: Pair<Int, Int>): List<Matrix> {
     return IntRange(0, rows() - 1).toList().permutations(rows() - size.first)
         .flatMap { row ->
@@ -46,11 +44,16 @@ fun Matrix.cofactors(size: Pair<Int, Int>): List<Matrix> {
         }
         .map(this::cofactor)
 }
-
 fun Matrix.cofactor(exclusions: Pair<List<Int>, List<Int>>): Matrix =
     Matrix(vectors.filterIndexed { index, _ -> !exclusions.first.contains(index) }
         .map { Vector(it.args.filterIndexed { index, _ -> !exclusions.second.contains(index) }) })
-
+fun Matrix.isDiagonal(): Boolean = vectors
+    .mapIndexed { i, vectors ->
+        vectors.args
+            .filterIndexed { j, _ -> i != j }
+            .map { it.isZero() }
+            .fold(true) { acc, b -> acc && b }
+    }.fold(true) { acc, b -> acc && b }
 fun Matrix.minor(i: Int, j: Int): BigDecimal = cofactor(i,j).determinant()
 fun  Matrix.cofactor(i: Int, j: Int): Matrix = cofactor(listOf(i) to listOf(j))
 fun Matrix.adjugate(): Matrix =
