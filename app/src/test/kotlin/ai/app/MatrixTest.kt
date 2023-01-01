@@ -229,4 +229,20 @@ class MatrixTest {
         )
         assertEquals(matrixOf(vectorOf(1, 2), vectorOf(2, 3)).determinant(), matrix.minor(2, 2))
     }
+
+    @Test
+    fun adjugate() {
+        val matrix = matrixOf(
+            vectorOf(2, 4, 1),
+            vectorOf(0, 2, 1),
+            vectorOf(2, 1, 1),
+        )
+        val expected = matrixOf(
+            vectorOf(1, 2, -4),
+            vectorOf(-3, 0, 6),
+            vectorOf(2, -2, 4),
+        )
+        val result = matrix.adjugate()
+        assertEquals(expected, result)
+    }
 }
