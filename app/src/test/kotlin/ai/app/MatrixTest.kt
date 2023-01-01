@@ -286,4 +286,9 @@ class MatrixTest {
         assertEquals(matrixOf(vectorOf(1, 0), vectorOf(0, 2)), Matrix.diagonal(vectorOf(1, 2)))
     }
 
+    @Test
+    fun identity() {
+        assertEquals(matrixOf(vectorOf(1, 0), vectorOf(0, 1)), Matrix.identity(2))
+    }
+
 }
