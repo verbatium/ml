@@ -132,6 +132,11 @@ class VectorTest {
         assertEquals(d(0), vectorOf(2, 2).standardDeviation())
         assertEquals(d(2), vectorOf(2, 4, 4, 4, 5, 5, 7, 9).standardDeviation())
     }
+
+    @Test
+    fun hadamardProduct() {
+        assertEquals(vectorOf(2,4,6), vectorOf(2,1,3).hadamardProduct(vectorOf(1,4,2)))
+    }
 }
 
 fun d(value: Int): BigDecimal {

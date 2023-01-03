@@ -25,6 +25,7 @@ fun Vector.vectorMultiply(other: Vector): Vector {
     )
 }
 
+fun Vector.hadamardProduct(vectorOf: Vector): Vector = Vector(args.zip(vectorOf.args).map { it.first * it.second })
 fun Vector.projectionOn(other: Vector): BigDecimal = projectionOn(other, MathContext.DECIMAL128)
 fun Vector.projectionOn(other: Vector, context: MathContext): BigDecimal = (this * other).divide(other.modulus(), context)
 fun Vector.isOrthogonal(other: Vector): Boolean = (this * other).isZero()
