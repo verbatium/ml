@@ -4,8 +4,8 @@ import ai.app.Vector.Companion.vectorOf
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
-import java.math.BigDecimal.ONE
-import java.math.BigDecimal.TWO
+import java.math.BigDecimal.*
+import java.math.MathContext
 
 class VectorTest {
     @Test
@@ -119,6 +119,18 @@ class VectorTest {
     fun scalarVector() {
         assertEquals(vectorOf(3, 3, 3, 3), Vector.scalar(3, 4))
         assertEquals(vectorOf(2, 2, 2), Vector.scalar(d(2), 3))
+    }
+
+    @Test
+    fun mean() {
+        assertEquals(d(5), vectorOf(2, 4, 4, 4, 5, 5, 7, 9).mean())
+    }
+
+    @Test
+    fun standardDeviation() {
+        assertEquals(d(0.5), vectorOf(1, 2).standardDeviation(MathContext.DECIMAL128))
+        assertEquals(d(0), vectorOf(2, 2).standardDeviation())
+        assertEquals(d(2), vectorOf(2, 4, 4, 4, 5, 5, 7, 9).standardDeviation())
     }
 }
 

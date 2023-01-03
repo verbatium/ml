@@ -44,6 +44,14 @@ fun Vector.cos(): Vector = this.cos(MathContext.DECIMAL128)
 fun Vector.modulus(): BigDecimal = modulus2().sqrt(MathContext.DECIMAL128)
 fun Vector.modulus2(): BigDecimal = args.map { it * it }.fold(ZERO, BigDecimal::add)
 fun Vector.divide(k: BigDecimal, mathContext: MathContext) = Vector(args.map { it.divide(k, mathContext)})
+fun Vector.mean(): BigDecimal = mean(MathContext.DECIMAL128)
+fun Vector.mean(mathContext: MathContext): BigDecimal = args.fold(ZERO, BigDecimal::add).divide(args.size.toBigDecimal(), mathContext)
+fun Vector.standardDeviation(): BigDecimal = standardDeviation(MathContext.DECIMAL128)
+fun Vector.standardDeviation(mathContext: MathContext): BigDecimal = args
+    .fold(ZERO to ZERO) { acc, pair -> acc.first + pair to acc.second + pair.pow(2) }
+    .let { it.second.multiply(args.size.toBigDecimal()) - it.first.pow(2) }
+    .divide(args.size.toBigDecimal().pow(2), mathContext)
+    .sqrt(mathContext)
 operator fun Vector.plus(b: Vector) = Vector(args.zip(b.args).map { it.first + it.second })
 operator fun Vector.minus(b: Vector) = Vector(args.zip(b.args).map { it.first - it.second })
 operator fun Vector.times(k: BigDecimal) = Vector(args.map { it * k })
