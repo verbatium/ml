@@ -24,7 +24,6 @@ fun Vector.vectorMultiply(other: Vector): Vector {
         .mapIndexed {index, d -> d * cellSign(index) }
     )
 }
-
 fun Vector.hadamardProduct(vectorOf: Vector): Vector = Vector(args.zip(vectorOf.args).map { it.first * it.second })
 fun Vector.projectionOn(other: Vector): BigDecimal = projectionOn(other, MathContext.DECIMAL128)
 fun Vector.projectionOn(other: Vector, context: MathContext): BigDecimal = (this * other).divide(other.modulus(), context)
@@ -44,7 +43,8 @@ fun Vector.cos(context: MathContext): Vector = Vector(args.map { it.divide(modul
 fun Vector.cos(): Vector = this.cos(MathContext.DECIMAL128)
 fun Vector.modulus(): BigDecimal = modulus2().sqrt(MathContext.DECIMAL128)
 fun Vector.modulus2(): BigDecimal = args.map { it * it }.fold(ZERO, BigDecimal::add)
-fun Vector.divide(k: BigDecimal, mathContext: MathContext) = Vector(args.map { it.divide(k, mathContext)})
+fun Vector.divide(k: BigDecimal, mathContext: MathContext) = Vector(args.map { it.divide(k, mathContext) })
+fun Vector.sum(): BigDecimal = args.fold(ZERO, BigDecimal::add)
 fun Vector.mean(): BigDecimal = mean(MathContext.DECIMAL128)
 fun Vector.mean(mathContext: MathContext): BigDecimal = args.fold(ZERO, BigDecimal::add).divide(args.size.toBigDecimal(), mathContext)
 fun Vector.standardDeviation(): BigDecimal = standardDeviation(MathContext.DECIMAL128)

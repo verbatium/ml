@@ -135,7 +135,12 @@ class VectorTest {
 
     @Test
     fun hadamardProduct() {
-        assertEquals(vectorOf(2,4,6), vectorOf(2,1,3).hadamardProduct(vectorOf(1,4,2)))
+        assertEquals(vectorOf(2, 4, 6), vectorOf(2, 1, 3).hadamardProduct(vectorOf(1, 4, 2)))
+    }
+
+    @Test
+    fun sum() {
+        assertEquals(d(6), vectorOf(2, 1, 3).sum())
     }
 }
 
