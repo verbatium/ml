@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.math.BigDecimal.ONE
-import java.math.BigDecimal.ZERO
 import java.math.MathContext
 import java.math.RoundingMode.HALF_UP
 
@@ -81,22 +80,6 @@ class LinearRegressionTest {
             LinearRegression.regression(vectorY, vectorX2, vectorX3).solve(mathContext)
         )
     }
-}
-
-private fun LinearRegression.solve(mathContext: MathContext): Vector {
-    println("xVectors = ${xVectors}")
-    val xYSquaresSum = Matrix.vectorRow(
-        Vector(xVectors
-            .map { Vector(it.args.zip(yVector.args).map { it.first * it.second }) }
-            .map { it.sum() })
-    )
-        .transpose()
-
-    val tXx = Matrix(xVectors).transpose().vectors
-        .map { Matrix.vectorColumn(it) * Matrix.vectorRow(it) }
-        .fold(Matrix.scalar(ZERO, xVectors.size)) { acc, m -> acc + m }
-
-    return (tXx.inverse(mathContext) * xYSquaresSum).vectors.first()
 }
 
 private fun LinearRegression.b(mathContext: MathContext): List<BigDecimal> {
