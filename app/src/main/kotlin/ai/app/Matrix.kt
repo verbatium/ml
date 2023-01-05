@@ -78,6 +78,11 @@ fun Matrix.divide(divider: BigDecimal, mathContext: MathContext) = Matrix(vector
 operator fun Matrix.times(other: BigDecimal): Matrix = Matrix(vectors.map { it * other })
 operator fun Matrix.plus(other: Matrix): Matrix = Matrix(vectors.zip(other.vectors).map { it.first + it.second })
 operator fun Matrix.minus(other: Matrix): Matrix = Matrix(vectors.zip(other.vectors).map { it.first - it.second })
-operator fun Matrix.times(other: Matrix): Matrix = Matrix(other.transpose().vectors.map { Vector(vectors.map { o -> it * o }) }).transpose()
+operator fun Matrix.times(other: Matrix): Matrix {
+    return Matrix(other.transpose()
+        .vectors.map {
+            Vector(vectors.map { o -> it * o })
+        })
+}
 
 fun cellSign(index: Int): BigDecimal = (index % 2).compareTo(0.5).toBigDecimal().negate()

@@ -217,10 +217,37 @@ class MatrixTest {
         )
         val result = a * b
         val expected = m(
-            v(6, 12),
-            v(27, 9)
+            v(6, 27),
+            v(12, 9)
         )
         assertEquals(expected, result)
+    }
+
+    @Test
+    fun multiplyRowByColumn() {
+        val expected2 = Matrix.matrixOf(Vector.vectorOf(4, 6), Vector.vectorOf(6, 9))
+        val a = Matrix.matrixOf(Vector.vectorOf(2), Vector.vectorOf(3))
+        val b = Matrix.matrixOf(Vector.vectorOf(2, 3))
+        assertEquals(expected2, a * b)
+    }
+
+    @Test
+    fun multiply1x3x3x1() {
+        val m1 = Matrix.matrixOf(Vector.vectorOf(1, 40, 210))
+        val m2 = Matrix.matrixOf(Vector.vectorOf(1), Vector.vectorOf(40), Vector.vectorOf(210))
+        assertEquals(Matrix.scalar(d(45701), 1), m1 * m2)
+    }
+
+    @Test
+    fun multiply3x1x1x3() {
+        val expected2 = Matrix.matrixOf(
+            Vector.vectorOf(1, 1000, 1000),
+            Vector.vectorOf(1000, 1000000, 1000000),
+            Vector.vectorOf(1000, 1000000, 1000000)
+        )
+        val a = Matrix.matrixOf(Vector.vectorOf(1), Vector.vectorOf(1000), Vector.vectorOf(1000))
+        val b = Matrix.matrixOf(Vector.vectorOf(1, 1000, 1000))
+        assertEquals(expected2, a * b)
     }
 
     @Test
