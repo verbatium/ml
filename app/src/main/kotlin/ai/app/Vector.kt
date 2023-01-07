@@ -62,6 +62,7 @@ fun Vector.sum(): BigDecimal = fold(ZERO, BigDecimal::add)
 fun Vector.mean(): BigDecimal = mean(MathContext.DECIMAL128)
 fun Vector.mean(mathContext: MathContext): BigDecimal = fold(ZERO, BigDecimal::add).divide(size.toBigDecimal(), mathContext)
 fun Vector.standardDeviation(): BigDecimal = standardDeviation(MathContext.DECIMAL128)
+fun Vector.meanSquaredError(other: Vector, mathContext: MathContext): BigDecimal = zip(other).map { (it.first - it.second).pow(2) }.sumOf { it }.divide(size.toBigDecimal(), mathContext)
 fun Vector.standardDeviation(mathContext: MathContext): BigDecimal =
     fold(ZERO to ZERO) { acc, pair -> acc.first + pair to acc.second + pair.pow(2) }
     .let { it.second.multiply(size.toBigDecimal()) - it.first.pow(2) }

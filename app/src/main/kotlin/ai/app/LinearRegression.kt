@@ -39,15 +39,5 @@ fun LinearRegression.f(vectorOf: Vector, mathContext: MathContext): BigDecimal {
         }.fold(BigDecimal.ZERO, BigDecimal::add)
 }
 
-fun LinearRegression.meanSquaredError(mathContext: MathContext): BigDecimal {
-    return Matrix(xVectors).transpose()
-        .map { f(it, mathContext) }
-        .zip(yVector)
-        .map {
-            val v = (it.first - it.second).pow(2)
-            println("${it.first}-${it.second})^2 = ${v}")
-            v
-        }
-        .fold(BigDecimal.ZERO, BigDecimal::add)
-        .divide(yVector.size.toBigDecimal(), mathContext)
-}
+fun LinearRegression.meanSquaredError(mathContext: MathContext): BigDecimal =
+    Vector(Matrix(xVectors).transpose().map { f(it, mathContext) }).meanSquaredError(yVector, mathContext)
