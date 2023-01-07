@@ -24,10 +24,10 @@ fun LinearRegression.solve(mathContext: MathContext): Vector {
             .map { it.sum() })
     ).transpose()
 
-    return (Matrix(xVectors).transpose().vectors
+    return (Matrix(xVectors).transpose()
         .map { Matrix.vectorColumn(it) * Matrix.vectorRow(it) }
         .fold(Matrix.scalar(BigDecimal.ZERO, xVectors.size)) { acc, m -> acc + m }.inverse(mathContext) * xYSquaresSum)
-        .vectors.first()
+        .first()
 }
 
 fun LinearRegression.f(vectorOf: Vector, mathContext: MathContext): BigDecimal {
@@ -40,7 +40,7 @@ fun LinearRegression.f(vectorOf: Vector, mathContext: MathContext): BigDecimal {
 }
 
 fun LinearRegression.meanSquaredError(mathContext: MathContext): BigDecimal {
-    return Matrix(xVectors).transpose().vectors
+    return Matrix(xVectors).transpose()
         .map { f(it, mathContext) }
         .zip(yVector)
         .map {
