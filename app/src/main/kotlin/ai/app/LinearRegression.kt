@@ -7,20 +7,20 @@ import java.math.MathContext
 data class LinearRegression(val yVector: Vector, val xVectors: List<Vector>) {
     companion object {
         fun regression(yVector: Vector, vararg xVectors: Vector): LinearRegression {
-            if (xVectors.first().args.toSet().first().minus(ONE).isZero()) {
+            if (xVectors.first().toSet().first().minus(ONE).isZero()) {
                 return LinearRegression(yVector, xVectors.toList())
             }
-            return LinearRegression(yVector, listOf(Vector.scalar(ONE, yVector.args.size), *xVectors))
+            return LinearRegression(yVector, listOf(Vector.scalar(ONE, yVector.size), *xVectors))
         }
     }
 }
 
-fun LinearRegression.size(): Int = xVectors.map { it.args.size }.first()
+fun LinearRegression.size(): Int = xVectors.map { it.size }.first()
 
 fun LinearRegression.solve(mathContext: MathContext): Vector {
     val xYSquaresSum = Matrix.vectorRow(
         Vector(xVectors
-            .map { Vector(it.args.zip(yVector.args).map { it.first * it.second }) }
+            .map { Vector(it.zip(yVector).map { it.first * it.second }) }
             .map { it.sum() })
     ).transpose()
 
@@ -31,9 +31,9 @@ fun LinearRegression.solve(mathContext: MathContext): Vector {
 }
 
 fun LinearRegression.f(vectorOf: Vector, mathContext: MathContext): BigDecimal {
-    if (vectorOf.args.size < xVectors.size) return f(Vector(listOf(ONE) + vectorOf.args), mathContext)
-    return solve(mathContext).args
-        .zip(vectorOf.args)
+    if (vectorOf.size < xVectors.size) return f(Vector(listOf(ONE) + vectorOf), mathContext)
+    return solve(mathContext)
+        .zip(vectorOf)
         .map {
             it.first * it.second
         }.fold(BigDecimal.ZERO, BigDecimal::add)
@@ -42,12 +42,12 @@ fun LinearRegression.f(vectorOf: Vector, mathContext: MathContext): BigDecimal {
 fun LinearRegression.meanSquaredError(mathContext: MathContext): BigDecimal {
     return Matrix(xVectors).transpose().vectors
         .map { f(it, mathContext) }
-        .zip(yVector.args)
+        .zip(yVector)
         .map {
             val v = (it.first - it.second).pow(2)
             println("${it.first}-${it.second})^2 = ${v}")
             v
         }
         .fold(BigDecimal.ZERO, BigDecimal::add)
-        .divide(yVector.args.size.toBigDecimal(), mathContext)
+        .divide(yVector.size.toBigDecimal(), mathContext)
 }
