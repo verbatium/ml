@@ -29,3 +29,25 @@ fun LinearRegression.solve(mathContext: MathContext): Vector {
         .fold(Matrix.scalar(BigDecimal.ZERO, xVectors.size)) { acc, m -> acc + m }.inverse(mathContext) * xYSquaresSum)
         .vectors.first()
 }
+
+fun LinearRegression.f(vectorOf: Vector, mathContext: MathContext): BigDecimal {
+    if (vectorOf.args.size < xVectors.size) return f(Vector(listOf(ONE) + vectorOf.args), mathContext)
+    return solve(mathContext).args
+        .zip(vectorOf.args)
+        .map {
+            it.first * it.second
+        }.fold(BigDecimal.ZERO, BigDecimal::add)
+}
+
+fun LinearRegression.meanSquaredError(mathContext: MathContext): BigDecimal {
+    return Matrix(xVectors).transpose().vectors
+        .map { f(it, mathContext) }
+        .zip(yVector.args)
+        .map {
+            val v = (it.first - it.second).pow(2)
+            println("${it.first}-${it.second})^2 = ${v}")
+            v
+        }
+        .fold(BigDecimal.ZERO, BigDecimal::add)
+        .divide(yVector.args.size.toBigDecimal(), mathContext)
+}

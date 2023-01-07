@@ -18,57 +18,45 @@ class LinearRegressionTest {
     }
 
     @Test
-    fun name2() {
+    fun meanSquaredError() {
         val mathContext = MathContext(5, HALF_UP)
-        val xValues = vectorOf(
-            3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 5, 5, 5, 5, 5, 5, 5, 6, 6, 7, 6, 6,
-            6, 7, 7, 7, 7, 7, 7, 7
-        )
-        val yValues = vectorOf(
-            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-            11, 11, 11, 11, 11, 11, 11, 11, 11, 11
-        )
+        val xValues = vectorOf(0, 2, 5, 7, 9, 0, 3, 4, 5)
+        val yValues = vectorOf(5, 9, 5, 15, 20, 25, 30, 35, 30)
         val regression = LinearRegression.regression(yValues, xValues)
-        val xAvg = xValues.mean() //5.25
-        val yAvg = yValues.mean() //8
-        val xStdev = xValues.standardDeviation(mathContext) //1.1565
-        val yStdev = yValues.standardDeviation(mathContext) //2.2361
-        val xyAvg = xValues.hadamardProduct(yValues).mean() //44.15
-        assertEquals(xyAvg, regression.product())
-        val r = xyAvg.minus(xAvg.multiply(yAvg)).divide(xStdev.multiply(yStdev), mathContext) //0.83138
-        assertEquals(r, regression.r(mathContext))
-        val r2 = r.pow(2) //0.6911927044
-        assertEquals(r2, regression.r2(mathContext))
-
-        val kX = r.multiply(yStdev.divide(xStdev, mathContext))
-        assertEquals(kX, regression.w(mathContext)[0])
-        val b = yAvg - xAvg * kX
-        val bs = regression.b(mathContext)
-        assertEquals(b, bs[0])
-        assertEquals(d("-0.43923445750"), b)
-        assertEquals(d("1.607473230"), kX)
+        assertEquals(d(114.28), regression.meanSquaredError(mathContext))
     }
 
     @Test
-    fun name4() {
+    fun f() {
+        val mathContext = MathContext(5, HALF_UP)
+        val xValues = vectorOf(0, 2, 5, 7, 9, 0, 3, 4, 5)
+        val yValues = vectorOf(5, 9, 5, 15, 20, 25, 30, 35, 30)
+        val regression = LinearRegression.regression(yValues, xValues)
+        assertEquals(d(21.533244), regression.f(vectorOf(d(9)), mathContext))
+    }
+
+    @Test
+    fun solve1() {
         val mathContext = MathContext.DECIMAL128
         val vectorX2 = vectorOf(
-            3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 5, 5, 5, 5, 5, 5, 5, 6, 6, 7, 6, 6,
-            6, 7, 7, 7, 7, 7, 7, 7
+            3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 5, 5, 5, 5, 5, 5, 5, 6, 6, 7, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7
         )
         val vectorY = vectorOf(
-            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-            11, 11, 11, 11, 11, 11, 11, 11, 11, 11
+            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11
         )
 
         assertEquals(
             vectorOf(d("-0.43925233644859813084112149532710366"), d("1.60747663551401869158878504672897786")),
             LinearRegression.regression(vectorY, vectorX2).solve(mathContext)
         )
+        assertEquals(
+            d("1.543925233644859813084112149532710"),
+            LinearRegression.regression(vectorY, vectorX2).meanSquaredError(mathContext)
+        )
     }
 
     @Test
-    fun name3() {
+    fun solve_2xVectors() {
         val mathContext = MathContext(5, HALF_UP)
 
         val vectorX2 = vectorOf(-1, 0, 1, 2, 3, -1, 0, 1, 2, 3)
@@ -77,7 +65,8 @@ class LinearRegressionTest {
 
         assertEquals(
             vectorOf(d("-2.50"), d("0.50"), d("2.0")),
-            LinearRegression.regression(vectorY, vectorX2, vectorX3).solve(mathContext)
+            LinearRegression.regression(vectorY, vectorX2, vectorX3)
+                .solve(mathContext)
         )
     }
 }
