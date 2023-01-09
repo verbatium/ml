@@ -87,6 +87,10 @@ fun Matrix.adjugate(): Matrix =
 
 fun Matrix.inverse(mathContext: MathContext): Matrix = this.adjugate().divide(this.determinant(), mathContext).transpose()
 fun Matrix.divide(divider: BigDecimal, mathContext: MathContext) = Matrix(map { it.divide(divider, mathContext) })
+fun Matrix.lowerTriangular(): Matrix = mapIndexed { i, vector -> vector.mapIndexed { j, value -> if (i < j) ZERO else value } }.matrix()
+fun Matrix.upperTriangular(): Matrix = mapIndexed { i, vector -> vector.mapIndexed { j, value -> if (j < i) ZERO else value } }.matrix()
+fun Matrix.symmetric(): Matrix = zip(transpose()).mapIndexed { i, v -> v.first.zip(v.second)
+    .mapIndexed { j, value -> if (j != i) value.first + value.second else value.first } }.matrix()
 operator fun Matrix.times(other: BigDecimal): Matrix = Matrix(map { it * other })
 operator fun Matrix.plus(other: Matrix): Matrix = Matrix(zip(other).map { it.first + it.second })
 operator fun Matrix.minus(other: Matrix): Matrix = Matrix(zip(other).map { it.first - it.second })

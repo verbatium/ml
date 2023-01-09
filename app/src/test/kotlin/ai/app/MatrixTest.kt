@@ -323,4 +323,26 @@ class MatrixTest {
 
     @Test
     fun vectorColumn() = assertEquals(m(v(1), v(2), v(3)), Matrix.vectorColumn(v(1, 2, 3)))
+
+    @Test
+    fun symmetric() {
+        val matrix = m(v(1, 2, 3), v(0, 1, 2), v(0, 0, 1))
+        val expected = m(v(1, 2, 3), v(2, 1, 2), v(3, 2, 1))
+        assertEquals(expected, matrix.symmetric())
+        assertEquals(expected, matrix.transpose().symmetric())
+    }
+
+    @Test
+    fun upperTriangular() {
+        val expected = m(v(1, 2, 3), v(0, 1, 2), v(0, 0, 1))
+        val matrix = m(v(1, 2, 3), v(2, 1, 2), v(3, 2, 1))
+        assertEquals(expected, matrix.upperTriangular())
+    }
+
+    @Test
+    fun lowerTriangular() {
+        val expected = m(v(1, 0, 0), v(2, 1, 0), v(3, 2, 1))
+        val matrix = m(v(1, 2, 3), v(2, 1, 2), v(3, 2, 1))
+        assertEquals(expected, matrix.lowerTriangular())
+    }
 }
