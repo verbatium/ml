@@ -12,9 +12,7 @@ data class Matrix(private val vectors: List<Vector>) : List<Vector> {
             return Matrix(a)
         }
 
-        fun diagonal(vectorOf: Vector): Matrix =
-            Matrix(vectorOf.mapIndexed { i, it -> Vector((0 until vectorOf.size).map { j -> if (i == j) it else ZERO }) })
-
+        fun diagonal(vectorOf: Vector): Matrix = vectorOf.mapIndexed { i, it -> (0 until vectorOf.size).map { j -> if (i == j) it else ZERO } }.matrix()
         fun identity(size: Int): Matrix = diagonal(Vector.scalar(1, size))
         fun scalar(value: Int, size: Int): Matrix = diagonal(Vector.scalar(value, size))
         fun scalar(value: BigDecimal, size: Int): Matrix = diagonal(Vector.scalar(value, size))
@@ -38,8 +36,8 @@ data class Matrix(private val vectors: List<Vector>) : List<Vector> {
     override fun toString(): String = joinToString(",", "[", "]")
 }
 
-fun Matrix.columns() = (0 until cols()).map { index -> Vector(map { v -> v[index] }) }
-fun Matrix.transpose(): Matrix = Matrix(columns())
+fun Matrix.columns() = (0 until cols()).map { index -> (map { v -> v[index] }).vector() }
+fun Matrix.transpose(): Matrix = columns().matrix()
 fun Matrix.rows(): Int = size
 fun Matrix.cols(): Int = first().size
 fun Matrix.size(): Pair<Int, Int> = rows() to cols()
@@ -48,8 +46,7 @@ fun Matrix.determinant(): BigDecimal {
     if (!this.isSquare()) throw IllegalArgumentException("Determinant can be calculated only for square matrix")
     if (size == 1) return first().first()
     return first().foldIndexed(ZERO) { index, total, item ->
-        Matrix(slice(1 until size).map { Vector(it.filterIndexed { i, _ -> i != index }) })
-            .determinant() * item * cellSign(index) + total
+        slice(1 until size).map { it.filterIndexed { i, _ -> i != index } }.matrix().determinant() * item * cellSign(index) + total
     }
 }
 
@@ -70,8 +67,8 @@ fun Matrix.cofactors(size: Pair<Int, Int>): List<Matrix> {
 }
 
 fun Matrix.cofactor(exclusions: Pair<List<Int>, List<Int>>): Matrix =
-    Matrix(filterIndexed { index, _ -> !exclusions.first.contains(index) }
-        .map { Vector(it.filterIndexed { index, _ -> !exclusions.second.contains(index) }) })
+    filterIndexed { index, _ -> !exclusions.first.contains(index) }
+        .map { it.filterIndexed { index, _ -> !exclusions.second.contains(index) } }.matrix()
 
 fun Matrix.isDiagonal(): Boolean = mapIndexed { i, vectors ->
     vectors
@@ -82,23 +79,20 @@ fun Matrix.isDiagonal(): Boolean = mapIndexed { i, vectors ->
 
 fun Matrix.minor(i: Int, j: Int): BigDecimal = cofactor(i, j).determinant()
 fun Matrix.cofactor(i: Int, j: Int): Matrix = cofactor(listOf(i) to listOf(j))
-fun Matrix.adjugate(): Matrix =
-    Matrix(mapIndexed { i, row -> Vector(List(row.size) { j -> minor(i, j) * cellSign(i) * cellSign(j) }) })
+fun Matrix.adjugate(): Matrix = mapIndexed { i, row -> List(row.size) { j -> minor(i, j) * cellSign(i) * cellSign(j) } }.matrix()
 
 fun Matrix.inverse(mathContext: MathContext): Matrix = this.adjugate().divide(this.determinant(), mathContext).transpose()
 fun Matrix.divide(divider: BigDecimal, mathContext: MathContext) = Matrix(map { it.divide(divider, mathContext) })
 fun Matrix.lowerTriangular(): Matrix = mapIndexed { i, vector -> vector.mapIndexed { j, value -> if (i < j) ZERO else value } }.matrix()
 fun Matrix.upperTriangular(): Matrix = mapIndexed { i, vector -> vector.mapIndexed { j, value -> if (j < i) ZERO else value } }.matrix()
-fun Matrix.symmetric(): Matrix = zip(transpose()).mapIndexed { i, v -> v.first.zip(v.second)
-    .mapIndexed { j, value -> if (j != i) value.first + value.second else value.first } }.matrix()
+fun Matrix.symmetric(): Matrix = zip(transpose()).mapIndexed { i, v ->
+    v.first.zip(v.second)
+        .mapIndexed { j, value -> if (j != i) value.first + value.second else value.first }
+}.matrix()
+
 operator fun Matrix.times(other: BigDecimal): Matrix = Matrix(map { it * other })
 operator fun Matrix.plus(other: Matrix): Matrix = Matrix(zip(other).map { it.first + it.second })
 operator fun Matrix.minus(other: Matrix): Matrix = Matrix(zip(other).map { it.first - it.second })
-operator fun Matrix.times(other: Matrix): Matrix {
-    return Matrix(other.transpose()
-        .map {
-            Vector(map { o -> it * o })
-        })
-}
+operator fun Matrix.times(other: Matrix): Matrix = other.transpose().map { map { o -> it * o } }.matrix()
 
 fun cellSign(index: Int): BigDecimal = (index % 2).compareTo(0.5).toBigDecimal().negate()
