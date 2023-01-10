@@ -1,7 +1,8 @@
 package ai.app
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal.valueOf as d
 
 class KNearestNeighborsTest {
 
@@ -38,7 +39,7 @@ class KNearestNeighborsTest {
         // Now we will create the K-Nearest Neighbors algorithm. For this
         // example, we will be choosing k = 3. This means that, for a given
         // instance, it's nearest 3 neighbors will be used to cast a decision.
-        val knn = KNearestNeighbors( 3, 3,  inputs,  outputs)
+        val knn = KNearestNeighbors(3, 3, inputs, outputs)
 
         // After the algorithm has been created, we can classify a new instance:
         assertEquals(d(2), knn.compute(listOf(11, 5, 3).vector()))

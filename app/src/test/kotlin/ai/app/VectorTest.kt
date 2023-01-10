@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.math.BigDecimal.*
 import java.math.MathContext
+import java.math.BigDecimal.valueOf as d
 
 class VectorTest {
     @Test
@@ -44,9 +45,9 @@ class VectorTest {
     @Test
     fun cos() {
         val expected = vectorOf(
-            d("0.3333333333333333333333333333333333"),
-            d("0.6666666666666666666666666666666667"),
-            d("0.6666666666666666666666666666666667")
+            BigDecimal("0.3333333333333333333333333333333333"),
+            BigDecimal("0.6666666666666666666666666666666667"),
+            BigDecimal("0.6666666666666666666666666666666667")
         )
         assertEquals(expected, vectorOf(d(2), d(4), d(4)).cos())
     }
@@ -142,16 +143,4 @@ class VectorTest {
     fun sum() {
         assertEquals(d(6), vectorOf(2, 1, 3).sum())
     }
-}
-
-fun d(value: Int): BigDecimal {
-    return value.toBigDecimal()
-}
-
-fun d(value: String): BigDecimal {
-    return value.toBigDecimal()
-}
-
-fun d(value: Double): BigDecimal {
-    return value.toBigDecimal()
 }

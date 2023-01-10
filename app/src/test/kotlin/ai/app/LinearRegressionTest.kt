@@ -7,6 +7,7 @@ import java.math.BigDecimal
 import java.math.BigDecimal.ONE
 import java.math.MathContext
 import java.math.RoundingMode.HALF_UP
+import java.math.BigDecimal.valueOf as d
 
 class LinearRegressionTest {
     @Test
@@ -46,11 +47,11 @@ class LinearRegressionTest {
         )
 
         assertEquals(
-            vectorOf(d("-0.43925233644859813084112149532710366"), d("1.60747663551401869158878504672897786")),
+            vectorOf(BigDecimal("-0.43925233644859813084112149532710366"), BigDecimal("1.60747663551401869158878504672897786")),
             LinearRegression.regression(vectorY, vectorX2).solve(mathContext)
         )
         assertEquals(
-            d("1.543925233644859813084112149532710"),
+            BigDecimal("1.543925233644859813084112149532710"),
             LinearRegression.regression(vectorY, vectorX2).meanSquaredError(mathContext)
         )
     }
@@ -64,7 +65,7 @@ class LinearRegressionTest {
         val vectorY = vectorOf(2, -2, 2, 2, 2, -4, 2, -3, -2, 1)
 
         assertEquals(
-            vectorOf(d("-2.50"), d("0.50"), d("2.0")),
+            vectorOf(BigDecimal("-2.50"), BigDecimal("0.50"), BigDecimal("2.0")),
             LinearRegression.regression(vectorY, vectorX2, vectorX3)
                 .solve(mathContext)
         )

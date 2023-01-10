@@ -8,6 +8,7 @@ import java.math.MathContext
 import java.math.RoundingMode
 import ai.app.Matrix.Companion.matrixOf as m
 import ai.app.Vector.Companion.vectorOf as v
+import java.math.BigDecimal.valueOf as d
 
 class MatrixTest {
     @Test
