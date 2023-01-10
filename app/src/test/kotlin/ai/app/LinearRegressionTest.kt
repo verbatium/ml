@@ -4,7 +4,6 @@ import ai.app.Vector.Companion.vectorOf
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
-import java.math.BigDecimal.ONE
 import java.math.MathContext
 import java.math.RoundingMode.HALF_UP
 import java.math.BigDecimal.valueOf as d
@@ -70,43 +69,4 @@ class LinearRegressionTest {
                 .solve(mathContext)
         )
     }
-}
-
-private fun LinearRegression.b(mathContext: MathContext): List<BigDecimal> {
-    val m = mean()
-    val y = yVector.mean()
-    return w(mathContext)
-        .zip(m)
-        .map { y - it.first * it.second }
-}
-
-private fun LinearRegression.w(mathContext: MathContext): List<BigDecimal> {
-    val r = r(mathContext)
-    val stdev = yVector.standardDeviation(mathContext)
-    return standardDeviation(mathContext)
-        .map { r * stdev.divide(it, mathContext) }
-}
-
-private fun LinearRegression.r(mathContext: MathContext): BigDecimal {
-    return product().minus(yVector.mean() * mean().fold(ONE, BigDecimal::multiply))
-        .divide(
-            yVector.standardDeviation(mathContext) * standardDeviation(mathContext)
-                .fold(ONE, BigDecimal::multiply), mathContext
-        )
-}
-
-private fun LinearRegression.standardDeviation(mathContext: MathContext): List<BigDecimal> {
-    return xVectors.map { it.standardDeviation(mathContext) }
-}
-
-private fun LinearRegression.mean(): List<BigDecimal> {
-    return xVectors.map { it.mean() }
-}
-
-private fun LinearRegression.product(): BigDecimal {
-    return xVectors.fold(Vector.scalar(ONE, size()), Vector::hadamardProduct).hadamardProduct(yVector).mean()
-}
-
-private fun LinearRegression.r2(mathContext: MathContext): BigDecimal {
-    return r(mathContext).pow(2)
 }
