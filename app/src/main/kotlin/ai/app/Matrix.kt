@@ -9,7 +9,7 @@ data class Matrix(private val vectors: List<Vector>) : List<Vector> {
         fun matrixOf(vararg args: Vector): Matrix {
             val a = args.asList()
             if (a.map { it.size }.toSet().size != 1) throw IllegalArgumentException("All vectors of matrix must have same dimension")
-            return Matrix(a)
+            return a.matrix()
         }
 
         fun diagonal(vectorOf: Vector): Matrix = vectorOf.mapIndexed { i, it -> (0 until vectorOf.size).map { j -> if (i == j) it else ZERO } }.matrix()
@@ -90,9 +90,9 @@ fun Matrix.symmetric(): Matrix = zip(transpose()).mapIndexed { i, v ->
         .mapIndexed { j, value -> if (j != i) value.first + value.second else value.first }
 }.matrix()
 
-operator fun Matrix.times(other: BigDecimal): Matrix = Matrix(map { it * other })
-operator fun Matrix.plus(other: Matrix): Matrix = Matrix(zip(other).map { it.first + it.second })
-operator fun Matrix.minus(other: Matrix): Matrix = Matrix(zip(other).map { it.first - it.second })
+operator fun Matrix.times(other: BigDecimal): Matrix = map { it * other }.matrix()
+operator fun Matrix.plus(other: Matrix): Matrix = zip(other).map { it.first + it.second }.matrix()
+operator fun Matrix.minus(other: Matrix): Matrix = zip(other).map { it.first - it.second }.matrix()
 operator fun Matrix.times(other: Matrix): Matrix = other.transpose().map { map { o -> it * o } }.matrix()
 
 fun cellSign(index: Int): BigDecimal = (index % 2).compareTo(0.5).toBigDecimal().negate()
