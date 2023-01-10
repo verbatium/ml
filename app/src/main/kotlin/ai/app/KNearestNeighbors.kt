@@ -1,9 +1,10 @@
 package ai.app
 
 import java.math.BigDecimal
+import java.math.MathContext
 
 data class KNearestNeighbors(val k: Int, val classes: Int, val inputs: Matrix, val outputs: Vector) {
-    val distanceAlgorithm: DistanceAlgorithm = Euclidean()
+    val distanceAlgorithm: DistanceAlgorithm = Euclidean(MathContext.DECIMAL128)
 }
 
 fun KNearestNeighbors.compute(input: Vector): BigDecimal {
