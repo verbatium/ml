@@ -1,6 +1,7 @@
 package ai.app
 
 import java.math.BigDecimal
+import java.math.BigInteger
 
 fun <T> List<T>.permutations(length: Int): List<List<T>> {
     if (length == 0) return listOf(listOf())
@@ -12,5 +13,15 @@ fun <T> List<T>.permutations(length: Int): List<List<T>> {
         }
 }
 
-fun List<BigDecimal>.vector(): Vector = Vector(this)
-fun List<List<BigDecimal>>.matrix(): Matrix = Matrix(this.map { it.vector() })
+fun <T : Number> List<T>.vector(): Vector = Vector(this.map { x ->
+    when (x) {
+        is Double -> x.toBigDecimal()
+        is Int -> x.toBigDecimal()
+        is Long -> x.toBigDecimal()
+        is BigDecimal -> x
+        is BigInteger -> x.toBigDecimal()
+        else -> throw IllegalArgumentException("unsupported type ${x.javaClass}")
+    }
+})
+
+fun <T : Number> List<List<T>>.matrix(): Matrix = Matrix(this.map { it.vector() })
