@@ -1,5 +1,6 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -21,16 +22,18 @@ fun App() {
     var buttonLabel by remember { mutableStateOf("Hello, World!") }
     val sample = remember { useResource("sample.png", ::loadImageBitmap) }
     MaterialTheme {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            drawIntoCanvas { canvas ->
-                canvas.withSave {
-                    canvas.drawImage(sample, Offset.Zero, Paint())
-                    canvas.translate(sample.width.toFloat(), 0f)
+        Column {
+            Button(onClick = { buttonLabel = "Hello, Desktop!" }) {
+                Text(buttonLabel)
+            }
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                drawIntoCanvas { canvas ->
+                    canvas.withSave {
+                        canvas.drawImage(sample, Offset.Zero, Paint())
+                        canvas.translate(sample.width.toFloat(), 0f)
+                    }
                 }
             }
-        }
-        Button(onClick = { buttonLabel = "Hello, Desktop!" }) {
-            Text(buttonLabel)
         }
     }
 }
