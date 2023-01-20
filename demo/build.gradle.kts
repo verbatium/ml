@@ -5,8 +5,6 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-group = "ai.app"
-version = "1.0-SNAPSHOT"
 
 repositories {
     google()
@@ -25,6 +23,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation(project(":utilities"))
             }
         }
         val jvmTest by getting

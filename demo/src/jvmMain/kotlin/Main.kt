@@ -1,3 +1,4 @@
+import ai.utilities.AxisUtils
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Column
@@ -13,19 +14,16 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.res.loadImageBitmap
-import androidx.compose.ui.res.useResource
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import org.jetbrains.skia.Font
 import java.math.BigDecimal
-import java.math.BigDecimal.ZERO
 
 @Composable
 @Preview
 fun App() {
     var buttonLabel by remember { mutableStateOf("Hello, World!") }
-    val xAxis = Axis(ZERO, BigDecimal.TEN, 10)
+    val xAxis = Axis(BigDecimal(121), BigDecimal(345), 10)
     MaterialTheme {
         Column {
             Button(onClick = { buttonLabel = "Hello, Desktop!" }) {
@@ -60,23 +58,30 @@ data class Axis(
     }
 
     private val width by lazy { (max - min).toFloat() }
+    private val labels by lazy { AxisUtils.split(min, max, ticks) }
+
     fun draw(scope: DrawScope) {
         val k = scope.size.width / width
-        scope.translate(0f, scope.size.height / 2f) {
-            this.drawIntoCanvas { c -> c.nativeCanvas.drawString(s = "0", x = 0f, y = -10f, font, paint = textPaint) }
+        scope.translate(0f, 0f) {
             this.drawLine(
                 color = Color.Black,
                 start = Offset(0f, 0f),
                 end = Offset(scope.size.width, 0f),
             )
-            IntRange(0, ticks)
-                .map { it.toFloat() * k }.forEach {
+            labels.forEach {
+                val dx = (it - min).toFloat() * k
+                translate(dx, 0f) {
                     this.drawLine(
                         color = Color.Black,
-                        start = Offset(it, -1f),
-                        end = Offset(it, 15f),
+                        start = Offset(dx, -1f),
+                        end = Offset(dx, 15f),
                     )
+
+                    this.drawIntoCanvas { c ->
+                        c.nativeCanvas.drawString(s = "$it", x = 0f, y = 55f, font, paint = textPaint)
+                    }
                 }
+            }
         }
     }
 }
