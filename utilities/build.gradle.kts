@@ -5,7 +5,3 @@
 plugins {
     id("ai.kotlin-library-conventions")
 }
-
-dependencies {
-    api(project(":list"))
-}
