@@ -12,6 +12,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.window.Window
@@ -62,7 +63,7 @@ data class Axis(
 
     fun draw(scope: DrawScope) {
         val k = scope.size.width / width
-        scope.translate(0f, 0f) {
+        scope.scale(1f, -1f) {
             this.drawLine(
                 color = Color.Black,
                 start = Offset(0f, 0f),
@@ -70,15 +71,17 @@ data class Axis(
             )
             labels.forEach {
                 val dx = (it - min).toFloat() * k
-                translate(dx, 0f) {
+                translate(dx, 15f) {
                     this.drawLine(
                         color = Color.Black,
                         start = Offset(dx, -1f),
-                        end = Offset(dx, 15f),
+                        end = Offset(dx, -15f),
                     )
-
                     this.drawIntoCanvas { c ->
-                        c.nativeCanvas.drawString(s = "$it", x = 0f, y = 55f, font, paint = textPaint)
+                        c.save()
+                        c.scale(1f, -1f)
+                        c.nativeCanvas.drawString(s = "$it", x = 0f, y = 0f, font, paint = textPaint)
+                        c.restore()
                     }
                 }
             }
