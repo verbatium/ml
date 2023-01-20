@@ -9,7 +9,7 @@ import org.jetbrains.skia.Font
 import org.jetbrains.skia.TextLine
 import java.math.BigDecimal
 
-data class XAxis(
+data class YAxis(
     private val min: BigDecimal,
     private val max: BigDecimal,
     private val ticks: Int,
@@ -24,36 +24,36 @@ data class XAxis(
         size = 30f
     }
 
-    private val width by lazy { (max - min).toFloat() }
+    private val height by lazy { (max - min).toFloat() }
     private val labels by lazy { AxisUtils.split(min, max, ticks) }
     private val labelDimensions by lazy { labels.map { TextLine.make("$it", font) } }
-    private val maxHeight = labelDimensions.maxOf { it.height }
-    val height = maxHeight + tickLength
+    private val maxWidth = labelDimensions.maxOf { it.width }
+    val width = maxWidth + tickLength
 
     fun draw(scope: DrawScope, length: Float) {
-        val k = length / width
+        val k = length / height
         scope.apply {
             this.drawLine(
                 color = Color.Black,
-                start = Offset(0f, 0f),
-                end = Offset(length, 0f),
+                start = Offset(width, 0f),
+                end = Offset( width, length),
                 strokeWidth = 2f
             )
 
             labels.forEach {
-                val dx = (it - min).toFloat() * k
-                translate(dx, -tickLength) {
+                val dy = (it - min).toFloat() * k
+                translate( maxWidth, dy) {
                     this.drawLine(
                         color = Color.Black,
                         start = Offset(0f, 0f),
-                        end = Offset(0f, tickLength),
+                        end = Offset(tickLength, 0f),
                         strokeWidth = 3f
                     )
                     this.drawIntoCanvas { c ->
                         val textLine = TextLine.make("$it", font)
                         c.save()
                         c.scale(1f, -1f)
-                        c.nativeCanvas.drawString(s = "$it", x = -textLine.width / 2f, y = maxHeight, font, paint = textPaint)
+                        c.nativeCanvas.drawString(s = "$it", x =-maxWidth, y = textLine.height / 2f, font, paint = textPaint)
                         c.restore()
                     }
                 }
